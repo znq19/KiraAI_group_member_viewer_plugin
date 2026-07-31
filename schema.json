@@ -1,0 +1,33 @@
+{
+  "section_main": {
+    "type": "section",
+    "name": "基础设置",
+    "collapsed": false,
+    "fields": {
+      "cache_ttl": {
+        "type": "integer",
+        "name": "成员列表缓存（秒）",
+        "default": 600,
+        "hint": "群成员列表的内存缓存时间，避免频繁向协议端请求。0 表示不缓存"
+      },
+      "max_results": {
+        "type": "integer",
+        "name": "查找结果上限",
+        "default": 20,
+        "hint": "group_find_member 单次最多返回的匹配条数，防止成员过多时消耗过多 token"
+      },
+      "inject_prompt": {
+        "type": "switch",
+        "name": "注入工具使用说明",
+        "default": true,
+        "hint": "向 LLM 注入本插件工具的使用说明（名片与昵称的区分等）"
+      },
+      "show_title": {
+        "type": "switch",
+        "name": "显示专属头衔",
+        "default": true,
+        "hint": "在群概览/查找结果中展示成员的专属头衔（🏷️），并允许按头衔关键词查找成员"
+      }
+    }
+  }
+}

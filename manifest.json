@@ -1,0 +1,8 @@
+{
+    "plugin_id": "group_member_viewer",
+    "display_name": "群成员查询插件",
+    "version": "1.1.0",
+    "description": "轻量级 QQ 群成员查询：群概览（人数/群主/管理员）、按关键词查找成员（QQ号/QQ昵称/群名片/专属头衔）、成员详情。纯查询无管理操作，Bot 无需管理员权限，适合所有 Bot。",
+    "author": "znq19",
+    "core_version": ">=2.6.1"
+}
