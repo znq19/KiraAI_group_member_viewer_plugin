@@ -15,12 +15,13 @@
 """
 
 import time
-from typing import Optional
 
 from core.plugin import BasePlugin, logger, on, Priority, register
 from core.chat.message_utils import KiraMessageBatchEvent
 from core.provider import LLMRequest
 from core.prompt_manager import Prompt
+
+from .mute_status import mute_expiry, normalize_ts
 
 
 ROLE_MAP = {"owner": "群主", "admin": "管理员", "member": "成员"}
@@ -303,14 +304,18 @@ class GroupMemberViewerPlugin(BasePlugin):
             f"入群时间: {self._format_time(data.get('join_time', 0))}",
             f"最后发言: {self._format_time(data.get('last_sent_time', 0))}",
         ]
-        if data.get("shut_up_timestamp", 0) > 0:
-            lines.append("⛔ 当前处于禁言状态")
+        # shut_up_timestamp 是"禁言截止时间戳"，必须和当前时间比较：
+        # 旧实现只判断 >0，禁言到期后 QQ 仍会保留过去的时间戳 → 误报"禁言中"
+        expiry = mute_expiry(data.get("shut_up_timestamp"))
+        if expiry:
+            lines.append(f"⛔ 当前处于禁言状态（至 {self._format_time(expiry)}）")
         return "\n".join(lines)
 
     # ============ 辅助 ============
 
     @staticmethod
     def _format_time(timestamp: int) -> str:
+        timestamp = normalize_ts(timestamp)
         if not timestamp:
             return "N/A"
         try:
